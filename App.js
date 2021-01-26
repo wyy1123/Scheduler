@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import CourseList from './components/CourseList';
 
 const schedule = {
   "title": "CS Courses for 2018-2019",
@@ -64,27 +65,9 @@ const getCourseNumber = course => (
   course.id.slice(1)
 );
 
-const Course = ({course}) => (
-  <TouchableOpacity style={styles.courseButton}>
-    <Text style={styles.courseText}>
-      {`CS ${getCourseNumber(course)}\n${course.meets}`}
-    </Text>
-  </TouchableOpacity>
-);
-
 const Banner = ({title}) => (
   <Text style={styles.bannerStyle}>{title}</Text>
 );
-
-const CourseList = ({courses}) => (
-  <ScrollView>
-  <View style={styles.courseList}>
-    {courses.map(course => <Course key={course.id} course={course} />)}
-  </View>
-  </ScrollView>
-);
-
-
 
 
 const App = () => {
