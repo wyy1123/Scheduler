@@ -1,7 +1,6 @@
 import React,{useState} from 'react';
 import { StyleSheet, ScrollView,View, TouchableOpacity,Text } from 'react-native';
 
-
 const TermButton = ({term,setSelectedTerm,isActive}) => (
     <TouchableOpacity style={styles[isActive ? 'termButtonActive' : 'termButton']}
     onPress={() => setSelectedTerm(term)}>
@@ -55,4 +54,5 @@ const TermButton = ({term,setSelectedTerm,isActive}) => (
     },
   });
   
+
   export default TermSelector;
