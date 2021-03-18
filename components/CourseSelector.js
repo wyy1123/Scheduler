@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 })
 
 
-const CourseSelector = ({courses}) => {
+const CourseSelector = ({courses, view}) => {
     const [selected, setSelected] = useState([]);
   
     const toggle = course => setSelected(selected => (
@@ -25,11 +25,13 @@ const CourseSelector = ({courses}) => {
     return (
       <View style={styles.courseList}>
         {courses.map(course => 
-        <Course key={course.id} 
+        <Course 
+        key={course.id} 
         course={course} 
         isSelected={selected.includes(course)} 
         isDisabled={hasConflict(course, selected)}
-        select={toggle}/>)}
+        select={toggle}
+        view = {view}/>)}
       </View>
     );
   };
