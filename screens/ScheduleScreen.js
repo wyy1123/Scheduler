@@ -5,32 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import CourseEditScreen from './CourseEditScreen';
 import UserContext from '../UserContext';
+import {firebase} from '../utils/firebase'
 
-const schedule = {
-  "title": "CS Courses for 2018-2019",
-  "courses": [
-    {
-      "id": "F101",
-      "title": "Computer Science: Concepts, Philosophy, and Connections",
-      "meets": "MWF 11:00-11:50"
-    },
-    {
-      "id": "F110",
-      "title": "Intro Programming for non-majors",
-      "meets": "MWF 10:00-10:50"
-    },
-    {
-      "id": "F111",
-      "title": "Fundamentals of Computer Programming I",
-      "meets": "MWF 13:00-13:50"
-    },
-    {
-      "id": "F211",
-      "title": "Fundamentals of Computer Programming II",
-      "meets": "TuTh 12:30-13:50"
-    }
-  ]
-};
+const fixCourses = json => ({
+  ...json,
+  courses: Object.values(json.courses)
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -90,16 +70,15 @@ const ScheduleScreen = ({navigation}) => {
   const canEdit = user && user.role === 'admin';
   const [schedule, setSchedule] = useState({ title: '', courses: [] });
   
-  const url = 'https://courses.cs.northwestern.edu/394/data/cs-courses.php';
+  // const url = 'https://courses.cs.northwestern.edu/394/data/cs-courses.php';
 
   useEffect(() => {
-    const fetchSchedule =  async () => {
-      const response = await fetch(url);
-      if (!response.ok) throw response;
-      const json = await response.json();
-      setSchedule(json);
+    const db = firebase.database().ref();
+    const handleData = snap => {
+      if (snap.val()) setSchedule(fixCourses(snap.val()));
     }
-    fetchSchedule();
+    db.on('value', handleData, error => alert(error));
+    return () => { db.off('value', handleData); };
   }, []);
 
   const view = (course) => {
